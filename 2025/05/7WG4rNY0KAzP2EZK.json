@@ -1,0 +1,146 @@
+{
+  "active": true,
+  "connections": {
+    "Convert PDF to Google Doc": {
+      "main": [
+        [
+          {
+            "input": "main",
+            "node": "Download OCRed Text"
+          }
+        ]
+      ]
+    },
+    "On New Google Drive File": {
+      "main": [
+        [
+          {
+            "input": "main",
+            "node": "Convert PDF to Google Doc"
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-05-28T18:03:11.289Z",
+  "id": "7WG4rNY0KAzP2EZK",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "document-grabber-ocr",
+  "nodes": [
+    {
+      "parameters": {},
+      "name": "Start",
+      "position": [
+        100,
+        300
+      ],
+      "type": "n8n-nodes-base.start",
+      "typeVersion": 1,
+      "id": "3413c1d6-dd5f-454c-b95c-24c24ea412fb"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1FfF4hntx3EU0Ph-8sjn0URE8-Vyqq4gS",
+          "mode": "list",
+          "cachedResultName": "n8n",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1FfF4hntx3EU0Ph-8sjn0URE8-Vyqq4gS"
+        },
+        "event": "fileCreated",
+        "options": {
+          "fileType": "all"
+        }
+      },
+      "name": "On New Google Drive File",
+      "position": [
+        300,
+        300
+      ],
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "id": "fbc2c783-e93e-4d34-932d-345bd4c4b69c",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "cENfd3GWDP54jP4B",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "copy",
+        "fileId": "{{ $('On New Google Drive File').item.json.id }}",
+        "name": "{{ $('On New Google Drive File').item.json.name }}_OCRed",
+        "options": {}
+      },
+      "name": "Convert PDF to Google Doc",
+      "position": [
+        540,
+        220
+      ],
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "id": "48d66f9c-fc95-4504-9538-63826f2f252e",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "cENfd3GWDP54jP4B",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": "{{ $('Convert PDF to Google Doc').item.json.id }}",
+        "options": {}
+      },
+      "name": "Download OCRed Text",
+      "position": [
+        800,
+        300
+      ],
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "id": "85f9da54-2abd-44cd-b93c-ea592f6ef81f",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "cENfd3GWDP54jP4B",
+          "name": "Google Drive account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "repo_name": null,
+  "repo_owner": null,
+  "repo_path": null,
+  "settings": {
+    "saveExecutionProgress": true,
+    "saveManualExecutions": true,
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "executionTimeout": 3600,
+    "timezone": "UTC"
+  },
+  "staticData": {
+    "node:On New Google Drive File": {
+      "lastTimeChecked": "2025-05-28T19:59:39Z"
+    }
+  },
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-05-28T18:15:01.798Z",
+  "versionId": "d59d579b-d0ea-495f-950f-df8bbedb194b"
+}
