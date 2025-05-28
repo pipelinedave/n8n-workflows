@@ -1,0 +1,71 @@
+{
+  "active": false,
+  "connections": {},
+  "createdAt": "2025-05-28T17:54:05.420Z",
+  "id": "Ets4sRs9gelepU1d",
+  "isArchived": true,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "document-grabber",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1FfF4hntx3EU0Ph-8sjn0URE8-Vyqq4gS",
+          "mode": "list",
+          "cachedResultName": "n8n",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1FfF4hntx3EU0Ph-8sjn0URE8-Vyqq4gS"
+        },
+        "event": "fileCreated",
+        "options": {
+          "fileType": "all"
+        }
+      },
+      "name": "On New Google Drive File",
+      "position": [
+        360,
+        300
+      ],
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "id": "f3a804f0-df97-446e-8e7d-d2e59831cb7d",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "cENfd3GWDP54jP4B",
+          "name": "Google Drive account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "repo_name": null,
+  "repo_owner": null,
+  "repo_path": null,
+  "settings": {
+    "saveExecutionProgress": true,
+    "saveManualExecutions": true,
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "executionTimeout": 3600,
+    "timezone": "UTC"
+  },
+  "staticData": {
+    "node:On New Google Drive File": {
+      "lastTimeChecked": "2025-05-28T17:58:02Z"
+    }
+  },
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-05-28T20:20:31.520Z",
+  "versionId": "58f2a500-9aa8-4919-9581-8062c1f486dd"
+}
