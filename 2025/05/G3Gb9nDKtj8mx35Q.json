@@ -1,0 +1,83 @@
+{
+  "active": false,
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-05-27T21:45:44.300Z",
+  "id": "G3Gb9nDKtj8mx35Q",
+  "isArchived": true,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "test1",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "884d1e40-e15f-4de9-89ea-33450d978a82",
+      "name": "Telegram Trigger",
+      "webhookId": "1e8ffc1e-0e81-450c-bd33-0fddd93a88ab",
+      "credentials": {
+        "telegramApi": {
+          "id": "JBHnyS5jG2jPYXLJ",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "kingovi@gmail.com",
+        "subject": "=Jeffrey: {{ $json.message.text }}",
+        "message": "best regards",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        220,
+        0
+      ],
+      "id": "e80c03af-11dd-4c48-b140-8ccf3a939c29",
+      "name": "Gmail",
+      "webhookId": "08daf7d8-76f3-4a4e-83fd-650d06df0f4e",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "LZ9glnrIqcHYa4hz",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "repo_name": null,
+  "repo_owner": null,
+  "repo_path": null,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-05-28T20:21:16.632Z",
+  "versionId": "65d3cba2-91c8-4342-8156-9b68a075edd0"
+}
