@@ -1,0 +1,85 @@
+{
+  "active": false,
+  "connections": {
+    "Start": {
+      "main": [
+        [
+          {
+            "input": "main",
+            "node": "Upload to Docspell"
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-05-28T20:08:47.620Z",
+  "id": "2zfi7baZo5zf4z73",
+  "isArchived": true,
+  "meta": null,
+  "name": "post to docspell",
+  "nodes": [
+    {
+      "name": "Start",
+      "parameters": {},
+      "position": [
+        250,
+        300
+      ],
+      "type": "n8n-nodes-base.start",
+      "typeVersion": 1,
+      "id": "74121d61-ee9e-472c-8086-c5ae0f916679"
+    },
+    {
+      "name": "Upload to Docspell",
+      "parameters": {
+        "authentication": "none",
+        "bodyContentType": "multipart-form-data",
+        "bodyParameters": {
+          "fields": [
+            {
+              "name": "meta",
+              "type": "string",
+              "value": "{\"multiple\": false, \"tags\": {\"items\":[\"from-n8n\"]}}"
+            },
+            {
+              "name": "file",
+              "options": {
+                "fileName": "{{ $json.fileName || 'uploadedFileFromN8n.pdf' }}"
+              },
+              "type": "binary",
+              "value": "data"
+            }
+          ]
+        },
+        "method": "POST",
+        "options": {},
+        "sendBody": true,
+        "url": "http://docspell.docspell.svc.cluster.local:7880/api/v1/open/upload/item/YOUR_SOURCE_ID_HERE"
+      },
+      "position": [
+        450,
+        300
+      ],
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "id": "b6be16cd-0f17-4c4c-aee3-49fca50c9be4"
+    }
+  ],
+  "pinData": null,
+  "repo_name": null,
+  "repo_owner": null,
+  "repo_path": null,
+  "settings": {
+    "saveExecutionProgress": true,
+    "saveManualExecutions": true,
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "executionTimeout": 3600,
+    "timezone": "UTC"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-05-28T20:09:43.730Z",
+  "versionId": "15e15aaa-ee3d-4822-8b81-9f908df52925"
+}
