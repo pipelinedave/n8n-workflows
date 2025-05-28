@@ -1,0 +1,275 @@
+{
+  "active": true,
+  "connections": {
+    "Upload to Docspell": {
+      "main": [
+        [
+          {
+            "node": "Move to docspelled",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "New file in gdrive/docspell": {
+      "main": [
+        [
+          {
+            "node": "is this a pdf/markdown/docx?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file": {
+      "main": [
+        [
+          {
+            "node": "Upload to Docspell",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "is this a pdf/markdown/docx?": {
+      "main": [
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-05-28T20:20:11.626Z",
+  "id": "J6NXqED31wBtWP1F",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Push Documents from GDrive to Docspell",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1180,
+        240
+      ],
+      "id": "b224de2e-8548-4e22-882d-56b79773a8c8",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://docspell.stillon.top/api/v1/open/upload/item/AJYaU78j54S-92za8b4qb7i-6Ksdvvi3hg6-fiHsGe1bnZJ",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "meta",
+              "value": "{\"multiple\": false, \"tags\": {\"items\": [\"from-n8n\"]}}"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1400,
+        40
+      ],
+      "id": "fae5d76e-2394-4573-9d72-30a8181a3055",
+      "name": "Upload to Docspell"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1y6C5kKSTnIEcKdrbZIXIrhk-fAUDLbfc",
+          "mode": "list",
+          "cachedResultName": "docspell",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1y6C5kKSTnIEcKdrbZIXIrhk-fAUDLbfc"
+        },
+        "event": "fileCreated",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        520,
+        140
+      ],
+      "id": "f9bf6475-0007-4294-9975-95eaf343d064",
+      "name": "New file in gdrive/docspell",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "cENfd3GWDP54jP4B",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "move",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $('Download file').item.json.id }}",
+          "mode": "id"
+        },
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1Rd3X2deRrsPtYp53xebOFFp4nXFzu183",
+          "mode": "list",
+          "cachedResultName": "docspelled",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1Rd3X2deRrsPtYp53xebOFFp4nXFzu183"
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1620,
+        40
+      ],
+      "id": "7b6f9b0c-73c0-4855-8362-e40092d404a9",
+      "name": "Move to docspelled",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "cENfd3GWDP54jP4B",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1180,
+        40
+      ],
+      "id": "527fa43e-1894-4e1c-960e-f7b8d1d75d57",
+      "name": "Download file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "cENfd3GWDP54jP4B",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d1129568-3e9f-4cdb-b101-cb5ea4174c28",
+              "leftValue": "={{ $json.mimeType }}",
+              "rightValue": "application/pdf",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "9c0c6010-b7ed-4aa7-9cf0-762c97ea8798",
+              "leftValue": "={{ $json.mimeType }}",
+              "rightValue": "text/markdown",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "fadc1a72-1bb6-48a0-bfe4-209da85b42d7",
+              "leftValue": "={{ $json.mimeType }}",
+              "rightValue": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        740,
+        140
+      ],
+      "id": "16067b5e-61c1-46b7-b34c-4b1de763f901",
+      "name": "is this a pdf/markdown/docx?"
+    }
+  ],
+  "pinData": {},
+  "repo_name": null,
+  "repo_owner": null,
+  "repo_path": null,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": {
+    "node:Google Drive Trigger": {
+      "lastTimeChecked": "2025-05-28T20:29:52Z"
+    },
+    "node:New file in gdrive/docspell": {
+      "lastTimeChecked": "2025-05-28T20:44:34Z"
+    }
+  },
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-05-28T20:44:34.728Z",
+  "versionId": "bc3ddd0a-5277-4b6a-9c32-f9e920a6212e"
+}
