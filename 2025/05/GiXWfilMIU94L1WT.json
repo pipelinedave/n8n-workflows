@@ -1,0 +1,39 @@
+{
+  "active": false,
+  "connections": {},
+  "createdAt": "2025-05-28T17:50:27.496Z",
+  "id": "GiXWfilMIU94L1WT",
+  "isArchived": false,
+  "meta": null,
+  "name": "toast",
+  "nodes": [
+    {
+      "name": "Start",
+      "parameters": {},
+      "position": [
+        250,
+        300
+      ],
+      "type": "n8n-nodes-base.start",
+      "typeVersion": 1,
+      "id": "78a3e880-3200-44f8-b97a-b1ee78df14ca"
+    }
+  ],
+  "pinData": null,
+  "repo_name": null,
+  "repo_owner": null,
+  "repo_path": null,
+  "settings": {
+    "saveExecutionProgress": true,
+    "saveManualExecutions": true,
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "executionTimeout": 3600,
+    "timezone": "UTC"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-05-28T17:50:27.496Z",
+  "versionId": "ebf8e643-c322-4f5f-b40e-f2c986c9dc0a"
+}
