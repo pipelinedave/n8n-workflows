@@ -1,0 +1,429 @@
+{
+  "active": true,
+  "connections": {
+    "New file in gdrive/n8n-kfzwolfram": {
+      "main": [
+        [
+          {
+            "node": "is pdf?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "is pdf?": {
+      "main": [
+        [
+          {
+            "node": "Google Drive",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Ankauf oder Verkauf?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ankauf oder Verkauf?": {
+      "main": [
+        [
+          {
+            "node": "move to \"verkauf\" folder",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "move to \"ankauf\" folder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "move to \"verkauf\" folder": {
+      "main": [
+        [
+          {
+            "node": "benachrichtigung",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "move to \"ankauf\" folder": {
+      "main": [
+        [
+          {
+            "node": "benachrichtigung1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "benachrichtigung": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "createdAt": "2025-05-28T22:11:21.522Z",
+  "id": "A9by6MtrshZzCLmE",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "document manager",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1-M1D5nAalDjfktXC6a3B-lUy8ZuD6_cu",
+          "mode": "list",
+          "cachedResultName": "n8n-kfzwolfram",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1-M1D5nAalDjfktXC6a3B-lUy8ZuD6_cu"
+        },
+        "event": "fileCreated",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        -40,
+        -200
+      ],
+      "id": "06b0ae48-da0e-460d-ae76-ef4fac7401ce",
+      "name": "New file in gdrive/n8n-kfzwolfram",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "cENfd3GWDP54jP4B",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "edf1359f-cd6d-4db1-b6cf-3aaef0310863",
+              "leftValue": "={{ $json.mimeType }}",
+              "rightValue": "application/pdf",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        180,
+        -200
+      ],
+      "id": "301b9170-ae82-4a99-a6d2-a03b491d99e2",
+      "name": "is pdf?"
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        620,
+        -300
+      ],
+      "id": "7eaaba47-4f4e-4e2d-9a8c-3bf9eea449e7",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        400,
+        -300
+      ],
+      "id": "8f965d7c-6316-477e-a302-5df7e0021b43",
+      "name": "Google Drive",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "cENfd3GWDP54jP4B",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.text }}",
+                    "rightValue": "Verkauf",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    },
+                    "id": "68a55114-701b-455e-8602-cc6797e48eb0"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "ceeaf7a3-2c18-4bbf-93ab-472ad3c9ea36",
+                    "leftValue": "={{ $json.text }}",
+                    "rightValue": "Ankauf",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        840,
+        -300
+      ],
+      "id": "be655501-3403-4c0e-a092-4a86f82e4a10",
+      "name": "Ankauf oder Verkauf?"
+    },
+    {
+      "parameters": {
+        "operation": "move",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $('Google Drive').item.json.id }}",
+          "mode": "id"
+        },
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "19NPbpCWfD7QtcrXRjJtqWUvaRate6XLt",
+          "mode": "list",
+          "cachedResultName": "ankauf",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/19NPbpCWfD7QtcrXRjJtqWUvaRate6XLt"
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1060,
+        -200
+      ],
+      "id": "123ed604-829a-4396-9538-5805bde455a0",
+      "name": "move to \"ankauf\" folder",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "cENfd3GWDP54jP4B",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "move",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $('Google Drive').item.json.id }}",
+          "mode": "id"
+        },
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1N0q88qQZzxgcODk0oYQNj7GEQT9f5NSf",
+          "mode": "list",
+          "cachedResultName": "verkauf",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1N0q88qQZzxgcODk0oYQNj7GEQT9f5NSf"
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1060,
+        -400
+      ],
+      "id": "6d584c88-6916-40e8-96f1-0987341bff1d",
+      "name": "move to \"verkauf\" folder",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "cENfd3GWDP54jP4B",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "7275455096",
+        "text": "=Ich habe ein neues Dokument in n8n-kfzwolfram/verkauf verschoben!",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1280,
+        -400
+      ],
+      "id": "5fb33848-dfaf-4254-9b8a-4bd73f451490",
+      "name": "benachrichtigung",
+      "webhookId": "2bfc1788-2117-4f76-acbc-e3c318fc6733",
+      "credentials": {
+        "telegramApi": {
+          "id": "JBHnyS5jG2jPYXLJ",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "7275455096",
+        "text": "Ich habe ein neues Dokument in n8n-kfzwolfram/ankauf verschoben!",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1280,
+        -200
+      ],
+      "id": "feb98321-f779-4308-ba8e-6698d74293cc",
+      "name": "benachrichtigung1",
+      "webhookId": "2bfc1788-2117-4f76-acbc-e3c318fc6733",
+      "credentials": {
+        "telegramApi": {
+          "id": "JBHnyS5jG2jPYXLJ",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        400,
+        -100
+      ],
+      "id": "2d9ed0d2-4b19-4b13-98fa-3a138aa61618",
+      "name": "No Operation, do nothing"
+    }
+  ],
+  "pinData": {},
+  "repo_name": null,
+  "repo_owner": null,
+  "repo_path": null,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": {
+    "node:New file in gdrive/n8n-kfzwolfram": {
+      "lastTimeChecked": "2025-05-28T23:24:36Z"
+    }
+  },
+  "tags": [
+    {
+      "createdAt": "2025-05-28T22:11:24.740Z",
+      "updatedAt": "2025-05-28T22:11:24.740Z",
+      "id": "xdPhN6Ja95LMVCh4",
+      "name": "kfzwolfram"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2025-05-28T22:48:10.683Z",
+  "versionId": "8c95028f-ffe3-4638-8e5a-2fd4e4e9f71d"
+}
