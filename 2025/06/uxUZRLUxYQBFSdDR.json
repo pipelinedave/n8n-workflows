@@ -1,0 +1,330 @@
+{
+  "active": false,
+  "connections": {
+    "TelegramTrigger_Start": {
+      "main": [
+        [
+          {
+            "node": "OpenAI_ExtractInfo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI_AskMissingInfo": {
+      "main": [
+        [
+          {
+            "node": "TelegramSend_AskMissingInfo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GoogleSheets_GetSheetDataForSale": {
+      "main": [
+        [
+          {
+            "node": "Function_ProcessSaleData",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Function_ProcessSaleData": {
+      "main": [
+        [
+          {
+            "node": "GoogleSheets_UpdateSaleRow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GoogleSheets_UpdateSaleRow": {
+      "main": [
+        [
+          {
+            "node": "GoogleDocs_CopyInvoiceTemplate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GoogleDocs_CopyInvoiceTemplate": {
+      "main": [
+        [
+          {
+            "node": "GoogleDocs_FillInvoice",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-06-01T15:26:54.660Z",
+  "id": "uxUZRLUxYQBFSdDR",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Rechnungsgenerator",
+  "nodes": [
+    {
+      "parameters": {
+        "chatId": "{{ $json.message.chat.id }}",
+        "text": "=\\n{{ $('OpenAI_AskMissingInfo').json.choices[0].message.content }}",
+        "additionalFields": {}
+      },
+      "id": "002a58e2-b86f-420b-ad29-4326b653b986",
+      "name": "TelegramSend_AskMissingInfo",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        -3240,
+        1300
+      ],
+      "webhookId": "fbc2619a-fc7e-4dba-9d86-14699504bfe2"
+    },
+    {
+      "parameters": {
+        "resource": "chat",
+        "options": {},
+        "requestOptions": {}
+      },
+      "id": "b1a91740-2329-4476-85c8-de8fd76bd6e6",
+      "name": "OpenAI_AskMissingInfo",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [
+        -3240,
+        1100
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "7b92eba0-b089-49b1-b49d-28968caa9193",
+      "name": "Router_InfoComplete",
+      "type": "n8n-nodes-base.router",
+      "typeVersion": 1,
+      "position": [
+        -3500,
+        900
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "1451d38b-47ec-4a1f-a23f-182fcdf221cc",
+      "name": "Set_TransactionData",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1.1,
+      "position": [
+        -3240,
+        900
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "d3658264-3859-4690-8624-96d6dafd6796",
+      "name": "Router_BuyOrSell",
+      "type": "n8n-nodes-base.router",
+      "typeVersion": 1,
+      "position": [
+        -3000,
+        900
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "googleApi",
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "sheetName": "YOUR_FAHRZEUGBESTANDSLISTE_SHEET_NAME",
+        "options": {}
+      },
+      "id": "8ab57c75-d335-4f36-bd65-7d88eb8928e4",
+      "name": "GoogleSheets_AppendPurchase",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 3,
+      "position": [
+        -2740,
+        800
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "4c981a8e-b8f3-4809-a1df-7e34860b67f9",
+      "name": "Set_PurchaseSuccessMessage",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1.1,
+      "position": [
+        -2500,
+        800
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "googleApi",
+        "operation": "getAllRows",
+        "documentId": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        }
+      },
+      "id": "5269cf16-11de-49e4-b362-d29b6a1267ee",
+      "name": "GoogleSheets_GetSheetDataForSale",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 3,
+      "position": [
+        -2740,
+        1000
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "b5717840-cda1-499b-8fdb-0682544da5d6",
+      "name": "Function_ProcessSaleData",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        -2500,
+        1000
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "googleApi",
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "sheetName": "YOUR_FAHRZEUGBESTANDSLISTE_SHEET_NAME",
+        "options": {}
+      },
+      "id": "55c79161-65ad-4daf-9c5a-23b7837eb691",
+      "name": "GoogleSheets_UpdateSaleRow",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 3,
+      "position": [
+        -2240,
+        1000
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "googleApi",
+        "operation": "copy"
+      },
+      "id": "ff9a6718-7332-4055-a8f3-4afb7e939c77",
+      "name": "GoogleDocs_CopyInvoiceTemplate",
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 1,
+      "position": [
+        -2000,
+        1000
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "googleApi",
+        "operation": "replaceText"
+      },
+      "id": "717b85a2-ddac-4d30-82b7-30bdb6b98692",
+      "name": "GoogleDocs_FillInvoice",
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 1,
+      "position": [
+        -1740,
+        1000
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "85003a8d-5ef8-4013-860a-6af05c11f068",
+      "name": "Set_SaleSuccessMessage",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1.1,
+      "position": [
+        -1500,
+        1000
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Set_TransactionData').item.json.telegram_chat_id }}",
+        "text": "={{ $json.success_message }}",
+        "additionalFields": {}
+      },
+      "id": "5ec2f0cf-2f45-41f3-b1cb-2e98d2c89756",
+      "name": "TelegramSend_FinalNotification",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        -2000,
+        800
+      ],
+      "webhookId": "7c66db60-8442-4817-8d63-4a1c1450692b"
+    },
+    {
+      "parameters": {
+        "additionalFields": {}
+      },
+      "id": "e3f3f22c-2b8a-448f-8ae9-37851d3119c1",
+      "name": "TelegramTrigger_Start",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1,
+      "position": [
+        -3940,
+        900
+      ],
+      "webhookId": "53119bda-4e7b-4002-b47b-de34a9ea14c7"
+    },
+    {
+      "parameters": {
+        "resource": "chat",
+        "options": {},
+        "requestOptions": {}
+      },
+      "id": "43f2b260-55e2-4844-8a46-8d9333688745",
+      "name": "OpenAI_ExtractInfo",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [
+        -3700,
+        900
+      ]
+    }
+  ],
+  "pinData": {},
+  "repo_name": null,
+  "repo_owner": null,
+  "repo_path": null,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2025-05-28T22:11:24.740Z",
+      "updatedAt": "2025-05-28T22:11:24.740Z",
+      "id": "xdPhN6Ja95LMVCh4",
+      "name": "kfzwolfram"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2025-06-01T16:08:15.726Z",
+  "versionId": "40047c13-5dc1-4754-862f-f1f4e6aaebb0"
+}
