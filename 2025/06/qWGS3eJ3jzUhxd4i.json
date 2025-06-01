@@ -1,0 +1,201 @@
+{
+  "active": false,
+  "connections": {
+    "extract images via stirling-pdf.stillon.top": {
+      "main": [
+        [
+          {
+            "node": "Unzip",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Unzip": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "extract images via stirling-pdf.stillon.top",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-06-01T14:31:32.031Z",
+  "id": "qWGS3eJ3jzUhxd4i",
+  "isArchived": false,
+  "meta": null,
+  "name": "Analyze Scanned PDFs via GPT-4O and return Text",
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://stirling-pdf.stirling-pdf.svc.cluster.local/api/v1/misc/extract-images",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "multipart/form-data"
+            },
+            {
+              "name": "accept",
+              "value": "*/*"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "fileInput",
+              "inputDataFieldName": "data"
+            },
+            {
+              "name": "format",
+              "value": "png"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -320,
+        -120
+      ],
+      "id": "7e5d5cfd-3d1f-497f-b2bd-1ef5377f8ef8",
+      "name": "extract images via stirling-pdf.stillon.top"
+    },
+    {
+      "parameters": {
+        "outputPrefix": "=file_"
+      },
+      "type": "n8n-nodes-base.compression",
+      "typeVersion": 1.1,
+      "position": [
+        -100,
+        -120
+      ],
+      "id": "6209f977-4f3d-45a2-ba7f-4621c310e21e",
+      "name": "Unzip"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "GPT-4O"
+        },
+        "text": "Please analyze the attached scanned document image and extract all legible text. The document is in German and may contain handwritten notes, stamps, or signatures. Aim to preserve the original formatting, including paragraphs, line breaks, and indentation, as accurately as possible. If any sections are unclear or illegible, denote them with '[unreadable]'. Your answer should contain just the extracted text itself and no greeting.",
+        "inputType": "base64",
+        "binaryPropertyName": "=file_0",
+        "simplify": false,
+        "options": {
+          "detail": "high",
+          "maxTokens": 5000
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        120,
+        -120
+      ],
+      "id": "ce2ef7b4-895f-4c84-865b-271d5789e3a0",
+      "name": "OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "kY2dW1GpSMyYKXJ2",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -540,
+        -120
+      ],
+      "id": "42c36709-4830-4116-830f-5272cdd49183",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7a6cd9be-bf71-4bcf-8f22-4e35a35172cd",
+              "name": "extractedText",
+              "value": "={{ $json.choices[0].message.content }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        340,
+        -120
+      ],
+      "id": "2da4a68c-0074-45ba-9d85-df234f024354",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {},
+  "repo_name": null,
+  "repo_owner": null,
+  "repo_path": null,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2025-05-28T21:07:50.705Z",
+      "updatedAt": "2025-05-28T21:07:50.705Z",
+      "id": "Cc2xT7NoLGdzIMJW",
+      "name": "subflow"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2025-06-01T14:51:25.536Z",
+  "versionId": "02cf130a-20c4-4c6b-915d-162a8ea5a8bd"
+}
