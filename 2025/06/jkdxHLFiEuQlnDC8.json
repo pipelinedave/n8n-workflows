@@ -1,0 +1,34 @@
+{
+  "active": false,
+  "connections": {},
+  "createdAt": "2025-06-16T13:45:04.946Z",
+  "id": "jkdxHLFiEuQlnDC8",
+  "isArchived": false,
+  "meta": null,
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -340,
+        -100
+      ],
+      "id": "397adaf9-df79-44ec-b271-4f775cff4c15",
+      "name": "When clicking ‘Execute workflow’"
+    }
+  ],
+  "pinData": {},
+  "repo_name": null,
+  "repo_owner": null,
+  "repo_path": null,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-06-16T13:45:04.946Z",
+  "versionId": "c9f06743-4b57-4d4a-8d8e-68cc70815eb0"
+}
